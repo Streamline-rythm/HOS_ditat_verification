@@ -33,7 +33,7 @@ async def get_drivers_substatus(
     }
     body= {
         "Filter": {
-            "showFilterPanel": true,
+            "showFilterPanel": "true",
             "truckCustomGroupKeys": [],
             "driverCustomGroupKeys": [],
             "customerCustomGroupKeys": [],
@@ -52,27 +52,28 @@ async def get_drivers_substatus(
             "toCurrentLegDate": 10
         },
     "UpdateCounter": 0
-}
+    }
 
-respond = requests(url=basic_url, headers=headers, body=body)
-data = respond.json()
-trip_data = data["data"]
-if trip_data:
-    print(f"trip_data_exist")
-    all_member_trip_data = trip_data["trips"]
-    if all_member_trip_data:
-        print("all drivers diat verification data exist")
+    respond = requests.post(url=basic_url, headers=headers, json=body)
+    data = respond.json()
+    print(f"data: {data}")
+    trip_data = data["data"]
+    if trip_data:
+        print(f"trip_data_exist")
+        all_member_trip_data = trip_data["trips"]
+        if all_member_trip_data:
+            print("all drivers diat verification data exist")
 
-        for each_driver_data in all_member_trip_data:
-            each_driver_trip_current_situation = each_driver_data["primaryDriverId"];
-            if driver_id in each_driver_trip_current_situation:
-                return {
-                    "current_status": each_driver_trip_current_situation
-                }
-        
-        return {
-            "current_status": "not found"
-        }
+            for each_driver_data in all_member_trip_data:
+                each_driver_trip_current_situation = each_driver_data["primaryDriverId"];
+                if driver_id in each_driver_trip_current_situation:
+                    return {
+                        "current_status": each_driver_data["subStatus"]
+                    }
+            
+            return {
+                "current_status": "not found"
+            }
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8080, proxy_headers=True,)
