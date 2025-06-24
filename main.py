@@ -56,13 +56,10 @@ async def get_drivers_substatus(
 
     respond = requests.post(url=basic_url, headers=headers, json=body)
     data = respond.json()
-    print(f"data: {data}")
     trip_data = data["data"]
     if trip_data:
-        print(f"trip_data_exist")
         all_member_trip_data = trip_data["trips"]
         if all_member_trip_data:
-            print("all drivers diat verification data exist")
 
             for each_driver_data in all_member_trip_data:
                 each_driver_trip_current_situation = each_driver_data["primaryDriverId"];
