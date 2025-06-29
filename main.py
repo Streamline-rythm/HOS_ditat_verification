@@ -65,7 +65,8 @@ async def get_drivers_substatus(
                 each_driver_trip_current_situation = each_driver_data["primaryDriverId"];
                 if driver_id in each_driver_trip_current_situation:
                     return {
-                        "current_status": each_driver_data["subStatus"]
+                        "current_status": each_driver_data["subStatus"],
+                        "tripID": each_driver_data["tripId"]
                     }
             
             return {
